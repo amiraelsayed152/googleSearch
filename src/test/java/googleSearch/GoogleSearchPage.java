@@ -44,21 +44,29 @@ public class GoogleSearchPage {
     }
 
     public static void main(String[] args) {
-        System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
+        //for mac
+        //System.setProperty("webdriver.chrome.driver", "drivers/chromedriver");
+
+        //for windows
+        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/drivers/Windows_OS_ChromeDriver");
         WebDriver driver = new ChromeDriver();
 
         GoogleSearchPage searchPage = new GoogleSearchPage(driver);
+        try {
+            searchPage.search("foodics");
+            searchPage.changeLanguage();
+            assertTrue(searchPage.isNumberOfResultsExistsOnUI());
 
-        searchPage.search("foodics");
-        searchPage.changeLanguage();
-        assertTrue(searchPage.isNumberOfResultsExistsOnUI());
-
-        searchPage.clearKeyword();
-        searchPage.search("selenium");
-        assertTrue(searchPage.isNumberOfResultsExistsOnUI()) ;
-        searchPage.clickOnLoadMore();
-        searchPage.areDifferentSearchSuggestionsDisplayed();
-        assertTrue(searchPage.areDifferentSearchSuggestionsDisplayed());
-        driver.quit();
+            searchPage.clearKeyword();
+            searchPage.search("selenium");
+            assertTrue(searchPage.isNumberOfResultsExistsOnUI());
+            searchPage.clickOnLoadMore();
+            searchPage.areDifferentSearchSuggestionsDisplayed();
+            assertTrue(searchPage.areDifferentSearchSuggestionsDisplayed());
+        }
+        finally {
+            driver.close();
+            driver.quit();
+        }
     }
 }
